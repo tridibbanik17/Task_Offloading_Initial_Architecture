@@ -1,0 +1,51 @@
+@startuml Timing_Hot_Standby
+scale 2
+title Make-Before-Break Migration - Zero Gap Timing Diagram
+
+skinparam backgroundColor white
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+
+robust "Sensor Node (PT)" as SENSOR #FFE0B2
+robust "Source Node (PT)" as SRC #BBDEFB
+robust "Target Node (DT)" as TGT #E1BEE7
+robust "Source Output" as SRCOUT #FFFDE7
+robust "Downstream Receives" as PROC #C8E6C9
+
+@0
+SENSOR is Publishing
+SRC is ACTIVE
+TGT is "Not Spawned"
+SRCOUT is Publishing
+PROC is "Source output"
+
+@2
+TGT is "Spawned (Unconfigured)"
+
+@3
+SRC is "ACTIVE (serializing)"
+
+@4
+SRC is "ACTIVE (transferring)"
+TGT is "Receiving snapshot"
+
+@5
+SRC is "ACTIVE (waiting)"
+TGT is "Configuring (deserializing)"
+
+@7
+TGT is ACTIVE
+SRCOUT is "MUTED (instant, local)"
+PROC is "Target output"
+
+@8
+SRC is "DEACTIVATING"
+
+@9
+SRC is "Shutting Down"
+SRCOUT is "N/A"
+
+@10
+SRC is DESTROYED
+
+@enduml

@@ -1,0 +1,96 @@
+digraph Architecture {
+    rankdir=TB;
+    fontname="Helvetica";
+    fontsize=14;
+    node [fontname="Helvetica", fontsize=10, style=filled, shape=record];
+    edge [fontname="Helvetica", fontsize=9];
+    nodesep=0.6;
+    ranksep=1.0;
+    
+    label="Task Offloading Framework Architecture (ROS2 Jazzy / Python)";
+    labelloc=t;
+    fontsize=16;
+
+    // ===== OFFLOAD MANAGER (top) =====
+    subgraph cluster_om {
+        label="Offload Manager (rclpy.node.Node — centralized, always running)";
+        style="filled,rounded";
+        fillcolor="#E3F2FD";
+        color="#1565C0";
+        fontsize=11;
+
+        registry [label="{Node Registry|node_id\lenvironment (PT/DT)\llifecycle_state\lresource_usage\l}", fillcolor="#BBDEFB"];
+        decision [label="{Decision Engine|evaluate()\lCPU / memory / latency\lthresholds\l}", fillcolor="#BBDEFB"];
+        migctrl [label="{Migration Controller|initiate_migration()\lmonitor_progress()\lrollback()\lconfirm_completion()\l}", fillcolor="#BBDEFB"];
+        
+        registry -> decision [label="metrics", color="#424242"];
+        decision -> migctrl [label="decision", color="#424242"];
+    }
+
+    // ===== PT (middle left) =====
+    subgraph cluster_pt {
+        label="Physical Twin (PT) — JetAcker / RoboRacer / RPi";
+        style="filled,rounded";
+        fillcolor="#FFF3E0";
+        color="#E65100";
+        fontsize=10;
+        
+        sensor [label="{Sensor Node\n(rclpy.node.Node)|camera_publisher\llidar_publisher\limu_publisher\l}", fillcolor="#FFE0B2"];
+        source [label="{OffloadableNode\n(Source Instance)|computation logic\linternal state\lLIFECYCLE MANAGED\l}", fillcolor="#FFCC80"];
+    }
+
+    // ===== DT (middle right) =====
+    subgraph cluster_dt {
+        label="Digital Twin (DT) — Laptop / Edge Server";
+        style="filled,rounded";
+        fillcolor="#F3E5F5";
+        color="#6A1B9A";
+        fontsize=10;
+        
+        target [label="{OffloadableNode\n(Target Instance)|same computation logic\lrestored state\lLIFECYCLE MANAGED\l}", fillcolor="#E1BEE7"];
+    }
+
+    // ===== BASE CLASS (bottom) =====
+    subgraph cluster_class {
+        label="OffloadableNode Base Class (extends rclpy.lifecycle.LifecycleNode)\n[All three are internal components of this single class]";
+        style="filled,rounded";
+        fillcolor="#E8F5E9";
+        color="#2E7D32";
+        fontsize=11;
+        
+        class_entry [label="OffloadableNode", shape=box, fillcolor="#81C784", fontsize=11, width=3];
+        
+        lc [label="{Lifecycle Callbacks|on_configure()\lon_activate()\lon_deactivate()\lon_shutdown()\lon_error()\l}", fillcolor="#C8E6C9"];
+        sm [label="{State Manager|serialize_state() → bytes\ldeserialize_state(bytes)\lget_snapshot()\lrestore_snapshot()\l}", fillcolor="#C8E6C9"];
+        oa [label="{Offload Agent|register_with_manager()\lhandle_offload_request()\lsend_heartbeat()\lreport_status()\l}", fillcolor="#C8E6C9"];
+        
+        class_entry -> lc [label="contains", color="#2E7D32", arrowhead=normal, arrowtail=diamond, dir=both];
+        class_entry -> sm [label="contains", color="#2E7D32", arrowhead=normal, arrowtail=diamond, dir=both];
+        class_entry -> oa [label="contains", color="#2E7D32", arrowhead=normal, arrowtail=diamond, dir=both];
+    }
+
+    // ===== EDGES (minimal, clean) =====
+    
+    // Action: Manager triggers offload on source
+    migctrl -> source [label="trigger_offload [Action]", color="#C62828", style=bold, penwidth=2];
+    
+    // Topic: Sensor feeds source
+    sensor -> source [label="/sensor/data [Topic]", color="#E65100", penwidth=1.5];
+    
+    // Topic: Sensor feeds target (after migration)
+    sensor -> target [label="/sensor/data [Topic]\n(after migration)", color="#E65100", penwidth=1.5];
+    
+    // Service: State transfer from source to target
+    source -> target [label="state_transfer [Service]\n(snapshot bytes)", color="#1565C0", style=dashed, penwidth=1.5];
+    
+    // Service: Nodes register with manager
+    source -> registry [label="register [Service]", color="#1565C0", style=dashed, penwidth=1.5];
+    target -> registry [label="register + confirm_active\n[Service]", color="#1565C0", style=dashed, penwidth=1.5];
+    
+    // Inheritance: both instances extend the whole base class
+    source -> class_entry [style=dotted, color="#388E3C", arrowhead=empty, label="extends"];
+    target -> class_entry [style=dotted, color="#388E3C", arrowhead=empty, label="extends"];
+
+    // Layout hints
+    {rank=same; source; target;}
+}

@@ -1,0 +1,93 @@
+digraph MigrationStateMachine {
+    rankdir=TB;
+    fontname="Helvetica";
+    node [fontname="Helvetica", style=filled, shape=box];
+    edge [fontname="Helvetica", fontsize=10];
+    nodesep=0.7;
+    ranksep=0.9;
+    
+    label="Migration State Machine (Node-Level View)\nHot Standby: Source stays Active until Target confirmed Active";
+    labelloc=t;
+    fontsize=16;
+    
+    // Start markers
+    start_src [label="", shape=circle, width=0.25, fillcolor=black];
+    start_tgt [label="", shape=circle, width=0.25, fillcolor=black];
+    end_src [label="", shape=doublecircle, width=0.25, fillcolor=black];
+    
+    // Source side
+    subgraph cluster_source {
+        label="SOURCE SIDE (Physical Twin)";
+        style="filled,rounded";
+        fillcolor="#FFF3E0";
+        color="#E65100";
+        fontsize=13;
+        
+        src_active [label="ACTIVE\n(processing normally)", fillcolor="#A5D6A7", color="#2E7D32"];
+        src_active_serial [label="ACTIVE + SERIALIZING\n(still processing while\nserializing state)", fillcolor="#FFF59D", color="#F9A825"];
+        src_active_waiting [label="ACTIVE + WAITING\n(still processing while\nwaiting for target confirm)", fillcolor="#FFF59D", color="#F9A825"];
+        src_active_muted [label="ACTIVE + MUTED\n(still Active for rollback,\nbut output muted instantly)", fillcolor="#FFCC80", color="#EF6C00"];
+        src_deactivating [label="DEACTIVATING\n(on_deactivate())\n(after network delay)", fillcolor="#FFCC80", color="#EF6C00"];
+        src_inactive [label="INACTIVE", fillcolor="#FFE0B2", color="#E65100"];
+        src_shutting_down [label="SHUTTING DOWN\n(on_shutdown())", fillcolor="#EF9A9A", color="#C62828"];
+        src_finalized [label="FINALIZED\n- destroy()", fillcolor="#E0E0E0", color="#424242"];
+    }
+    
+    // Target side
+    subgraph cluster_target {
+        label="TARGET SIDE (Digital Twin)";
+        style="filled,rounded";
+        fillcolor="#F3E5F5";
+        color="#6A1B9A";
+        fontsize=13;
+        
+        tgt_spawned [label="UNCONFIGURED\n(freshly spawned)", fillcolor="#E1BEE7", color="#6A1B9A"];
+        tgt_configuring [label="CONFIGURING\n(on_configure():\ndeserialize snapshot)", fillcolor="#CE93D8", color="#6A1B9A"];
+        tgt_inactive [label="INACTIVE\n(state restored)", fillcolor="#FFF59D", color="#F9A825"];
+        tgt_activating [label="ACTIVATING\n(on_activate())", fillcolor="#CE93D8", color="#6A1B9A"];
+        tgt_active [label="ACTIVE\n(processing resumes)", fillcolor="#A5D6A7", color="#2E7D32"];
+    }
+    
+    // Rollback
+    subgraph cluster_rollback {
+        label="ROLLBACK PATH (on any failure)";
+        style="filled,rounded";
+        fillcolor="#FFEBEE";
+        color="#C62828";
+        fontsize=12;
+        
+        failure [label="FAILURE DETECTED\n(serialization, transfer,\nor target activation failed)", fillcolor="#EF9A9A", color="#C62828", shape=diamond];
+        rollback [label="SOURCE CONTINUES\nACTIVE\n(no change needed —\nit never stopped)", fillcolor="#A5D6A7", color="#2E7D32"];
+    }
+    
+    // Source flow
+    start_src -> src_active [label="normal operation"];
+    src_active -> src_active_serial [label="offload command received\n(source keeps processing!)"];
+    src_active_serial -> src_active_waiting [label="snapshot ready,\nsent to target\n(source keeps processing!)"];
+    src_active_waiting -> src_active_muted [label="target confirmed ACTIVE\n(mute output instantly, local)"];
+    src_active_muted -> src_deactivating [label="deactivate command arrives\n(network delay from Manager)"];
+    src_deactivating -> src_inactive [label="on_deactivate() success"];
+    src_inactive -> src_shutting_down [label="proceed to shutdown"];
+    src_shutting_down -> src_finalized [label="on_shutdown() success"];
+    src_finalized -> end_src [label="destroy()"];
+    
+    // Target flow
+    start_tgt -> tgt_spawned [label="Offload Manager\nspawns target"];
+    tgt_spawned -> tgt_configuring [label="snapshot received"];
+    tgt_configuring -> tgt_inactive [label="on_configure() success\n(state deserialized)"];
+    tgt_inactive -> tgt_activating [label="activate command"];
+    tgt_activating -> tgt_active [label="on_activate() success"];
+    
+    // Cross-cluster: transfer and confirmation
+    src_active_serial -> tgt_spawned [style=bold, color="#D32F2F", label="state snapshot\n(ROS2 Service)", constraint=false];
+    tgt_active -> src_active_waiting [style=bold, color="#2E7D32", label="CONFIRMATION\n(triggers mute)", constraint=false, labeldistance=3, labelangle=0];
+    
+    // Rollback paths
+    src_active_serial -> failure [color="#C62828", style=dashed, label="serialization fails"];
+    src_active_waiting -> failure [color="#C62828", style=dashed, label="transfer fails /\ntarget timeout"];
+    tgt_configuring -> failure [color="#C62828", style=dashed, label="deserialization fails"];
+    tgt_activating -> failure [color="#C62828", style=dashed, label="activation fails"];
+    
+    failure -> rollback [color="#C62828", label="Offload Manager\ncancels migration"];
+    rollback -> src_active [color="#2E7D32", style=bold, label="source was never\nstopped — just\ncontinues as-is"];
+}

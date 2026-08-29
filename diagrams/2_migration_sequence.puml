@@ -1,0 +1,75 @@
+@startuml Migration_Sequence_Diagram
+scale 2
+title Task Offloading - Migration Sequence Diagram
+
+skinparam backgroundColor #FEFEFE
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+
+participant "Offload Manager" as OM #E3F2FD
+participant "Source Node\n(PT, Active)" as SRC #FFE0B2
+participant "Target Node\n(DT)" as TGT #E1BEE7
+participant "Sensor Node\n(PT)" as SENSOR #C8E6C9
+
+== Normal Operation ==
+
+SENSOR -> SRC : /sensor/data [Topic]\n(continuous stream)
+SRC -> SRC : process data, publish output
+SRC -> OM : heartbeat [Topic]\n(periodic: node_id, env=PT, cpu=85%)
+
+== Decision Phase ==
+
+OM -> OM : Decision Engine evaluates:\nCPU > threshold - offload needed
+note right of OM : Selects target environment (DT)\nbased on available resources
+
+== Migration Phase ==
+
+OM -> SRC : SendGoal [Action]\n(offload target=DT)
+activate SRC #FFD54F
+
+SRC --> OM : Feedback: "acknowledged, serializing"
+
+SRC -> SRC : serialize_state()\n(still processing + publishing)
+
+SRC -> TGT : state_transfer [Service Request]\n(snapshot bytes + metadata)
+activate TGT #CE93D8
+
+TGT -> TGT : deserialize_state(snapshot)
+TGT -> TGT : on_configure()\nUnconfigured - Inactive
+
+TGT -> TGT : on_activate()\nInactive - Active
+
+TGT --> SRC : [Service Response] "state restored, active"
+deactivate TGT
+
+== Mute + Handoff ==
+
+SENSOR -> TGT : /sensor/data [Topic]\n(DT now subscribed, processing)
+
+SRC -> SRC : mute_publishers()\n(instant, local - no more output)
+
+note over SRC, TGT #FFFDE7 : Source MUTED: still Active (for rollback safety)\nbut not publishing. Only Target output reaches downstream.
+
+SRC --> OM : Feedback: "target confirmed active, output muted"
+
+== Source Cleanup (after network delay) ==
+
+OM -> SRC : deactivate command
+SRC -> SRC : on_deactivate()\nActive - Inactive
+
+SRC -> SRC : on_shutdown()\nInactive - Finalized
+
+SRC -> OM : deregister [Service]
+SRC -> SRC : destroy()
+deactivate SRC
+
+SRC --> OM : Result: "migration complete"
+
+== Post-Migration ==
+
+OM -> OM : Update registry:\nnode now on DT environment
+
+SENSOR -> TGT : /sensor/data [Topic]\n(sole processor)
+TGT -> OM : heartbeat [Topic]\n(node_id, env=DT, cpu=30%)
+
+@enduml

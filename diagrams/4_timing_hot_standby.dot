@@ -1,0 +1,117 @@
+digraph TimingDiagram {
+    rankdir=LR;
+    fontname="Helvetica";
+    fontsize=14;
+    node [fontname="Helvetica", fontsize=10, style=filled, height=0.6];
+    edge [style=invis];
+    
+    label="Make-Before-Break Migration - Timing Diagram\nSource mutes instantly on target confirmation, then deactivates (network delay)";
+    labelloc=t;
+    fontsize=16;
+
+    // Time labels
+    subgraph cluster_time {
+        label="";
+        style=invis;
+        node [shape=none, fillcolor=white, style=""];
+        
+        tl [label="Time -->"];
+        t0 [label="t0\nNormal"];
+        t1 [label="t1\nDecision +\nSerialize"];
+        t2 [label="t2\nTransfer"];
+        t3 [label="t3\nTarget\nConfiguring"];
+        t4 [label="t4\nTarget Active\nSource Mutes\n(instant, local)"];
+        t5 [label="t5\nSource\nDeactivating\n(network delay)"];
+        t6 [label="t6\nSource\nShutdown"];
+        t7 [label="t7\nComplete"];
+        
+        tl -> t0 -> t1 -> t2 -> t3 -> t4 -> t5 -> t6 -> t7;
+    }
+    
+    // Sensor row
+    subgraph cluster_sensor {
+        label="";
+        style=invis;
+        node [shape=box];
+        
+        sl [label="Sensor\nNode", fillcolor=white, shape=none, style=""];
+        s0 [label="Publish", fillcolor="#A5D6A7"];
+        s1 [label="Publish", fillcolor="#A5D6A7"];
+        s2 [label="Publish", fillcolor="#A5D6A7"];
+        s3 [label="Publish", fillcolor="#A5D6A7"];
+        s4 [label="Publish", fillcolor="#A5D6A7"];
+        s5 [label="Publish", fillcolor="#A5D6A7"];
+        s6 [label="Publish", fillcolor="#A5D6A7"];
+        s7 [label="Publish", fillcolor="#A5D6A7"];
+        
+        sl -> s0 -> s1 -> s2 -> s3 -> s4 -> s5 -> s6 -> s7;
+    }
+    
+    // Source row
+    subgraph cluster_src {
+        label="";
+        style=invis;
+        node [shape=box];
+        
+        srcl [label="Source\n(PT)", fillcolor=white, shape=none, style=""];
+        src0 [label="ACTIVE", fillcolor="#A5D6A7"];
+        src1 [label="ACTIVE\n(serializing)", fillcolor="#FFF59D"];
+        src2 [label="ACTIVE\n(transferring)", fillcolor="#FFF59D"];
+        src3 [label="ACTIVE\n(waiting)", fillcolor="#FFF59D"];
+        src4 [label="ACTIVE\nMUTED", fillcolor="#FFCC80"];
+        src5 [label="DEACTIVATING\nMUTED", fillcolor="#EF9A9A"];
+        src6 [label="SHUTTING\nDOWN", fillcolor="#EF9A9A"];
+        src7 [label="DESTROYED", fillcolor="#E0E0E0"];
+        
+        srcl -> src0 -> src1 -> src2 -> src3 -> src4 -> src5 -> src6 -> src7;
+    }
+    
+    // Target row
+    subgraph cluster_tgt {
+        label="";
+        style=invis;
+        node [shape=box];
+        
+        tgtl [label="Target\n(DT)", fillcolor=white, shape=none, style=""];
+        tgt0 [label="  -  ", fillcolor="#F5F5F5"];
+        tgt1 [label="Spawned", fillcolor="#E1BEE7"];
+        tgt2 [label="Receiving\nsnapshot", fillcolor="#E1BEE7"];
+        tgt3 [label="Configuring\n(deserialize)", fillcolor="#CE93D8"];
+        tgt4 [label="ACTIVE", fillcolor="#A5D6A7"];
+        tgt5 [label="ACTIVE", fillcolor="#A5D6A7"];
+        tgt6 [label="ACTIVE", fillcolor="#A5D6A7"];
+        tgt7 [label="ACTIVE", fillcolor="#A5D6A7"];
+        
+        tgtl -> tgt0 -> tgt1 -> tgt2 -> tgt3 -> tgt4 -> tgt5 -> tgt6 -> tgt7;
+    }
+    
+    // Downstream receives row
+    subgraph cluster_proc {
+        label="";
+        style=invis;
+        node [shape=box];
+        
+        pl [label="Downstream\nReceives", fillcolor=white, shape=none, style=""];
+        p0 [label="Source\noutput", fillcolor="#BBDEFB"];
+        p1 [label="Source\noutput", fillcolor="#BBDEFB"];
+        p2 [label="Source\noutput", fillcolor="#BBDEFB"];
+        p3 [label="Source\noutput", fillcolor="#BBDEFB"];
+        p4 [label="Target\noutput", fillcolor="#C8E6C9"];
+        p5 [label="Target\noutput", fillcolor="#C8E6C9"];
+        p6 [label="Target\noutput", fillcolor="#C8E6C9"];
+        p7 [label="Target\noutput", fillcolor="#C8E6C9"];
+        
+        pl -> p0 -> p1 -> p2 -> p3 -> p4 -> p5 -> p6 -> p7;
+    }
+    
+    // Alignment
+    {rank=same; tl; sl; srcl; tgtl; pl;}
+    {rank=same; t0; s0; src0; tgt0; p0;}
+    {rank=same; t1; s1; src1; tgt1; p1;}
+    {rank=same; t2; s2; src2; tgt2; p2;}
+    {rank=same; t3; s3; src3; tgt3; p3;}
+    {rank=same; t4; s4; src4; tgt4; p4;}
+    {rank=same; t5; s5; src5; tgt5; p5;}
+    {rank=same; t6; s6; src6; tgt6; p6;}
+    {rank=same; t7; s7; src7; tgt7; p7;}
+}
