@@ -12,7 +12,7 @@ from task_offloading.value_types import (
     Decision,
     Migration,
 )
-from task_offloading.sensor import CameraSensor
+from task_offloading.sensor import CameraSensor, LidarSensor, ImuSensor
 from task_offloading.offloadable_node import OffloadableNode
 from task_offloading.offload_manager import OffloadManager
 
@@ -27,21 +27,22 @@ def main() -> None:
 
     # ROS2 nodes require an initialized context.
     rclpy.init()
-    sensor = None
-    node = None
+    ros_nodes = []
     try:
-        sensor = CameraSensor("camera_sensor", "vehicle_1", "cam_front")
+        camera = CameraSensor("camera_sensor", "vehicle_1", "cam_front")
+        lidar = LidarSensor("lidar_sensor", "vehicle_1", "lidar_top")
+        imu = ImuSensor("imu_sensor", "vehicle_1", "imu_main")
         node = OffloadableNode("perception", "vehicle_1")
         manager = OffloadManager()
+        ros_nodes = [camera, lidar, imu, node]
 
         print("All classes instantiated successfully:")
-        for obj in (snapshot, record, status, decision, migration, sensor, node, manager):
+        for obj in (snapshot, record, status, decision, migration,
+                    camera, lidar, imu, node, manager):
             print("  -", type(obj).__name__)
     finally:
-        if sensor is not None:
-            sensor.destroy_node()
-        if node is not None:
-            node.destroy_node()
+        for ros_node in ros_nodes:
+            ros_node.destroy_node()
         rclpy.shutdown()
 
 
