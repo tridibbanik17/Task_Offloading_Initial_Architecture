@@ -1,3 +1,5 @@
+from typing import Any
+
 from rclpy.lifecycle import LifecycleNode
 from rclpy.lifecycle import LifecycleState
 from rclpy.lifecycle import TransitionCallbackReturn
@@ -9,7 +11,7 @@ class OffloadableNode(LifecycleNode):
     def __init__(self, node_id: str, current_location: str) -> None:
         super().__init__(node_id)
         self.current_location = current_location
-        self._internal_state: dict = {}
+        self._internal_state: dict[str, Any] = {}
         self._lifecycle_state: str = "unconfigured"
         self._snapshot_version: int = 0
         self._snapshot: StateSnapshot | None = None
