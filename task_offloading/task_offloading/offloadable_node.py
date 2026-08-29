@@ -12,7 +12,7 @@ class OffloadableNode(LifecycleNode):
         # node_id is passed to rclpy as the node name; read it back via get_name().
         # It is NOT stored as a separate self.node_id field.
         super().__init__(node_id)
-        self.current_location = current_location  # framework-owned, not from rclpy
+        self._current_location = current_location  # framework-owned, not from rclpy
         self._internal_state: dict[str, Any] = {}
         self._lifecycle_state: str = "unconfigured"
         self._snapshot_version: int = 0
