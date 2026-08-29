@@ -18,7 +18,7 @@ from task_offloading.offload_manager import OffloadManager
 
 
 def main() -> None:
-    # Plain dataclasses - no ROS2 runtime needed.
+    # dataclasses - no ROS2 runtime needed.
     snapshot = StateSnapshot(1, b"", b"", ["/sensor/data"], 0.0)
     record = NodeRecord("perception", "vehicle_1", "active", 0.0, 0.0, 0.0)
     status = NodeStatus("perception", "vehicle_1", "active", 0.0, 0.0, True)
