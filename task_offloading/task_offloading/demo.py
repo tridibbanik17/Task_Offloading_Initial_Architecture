@@ -12,7 +12,7 @@ from task_offloading.value_types import (
     Decision,
     Migration,
 )
-from task_offloading.sensor import Sensor
+from task_offloading.sensor import CameraSensor
 from task_offloading.offloadable_node import OffloadableNode
 from task_offloading.offload_manager import OffloadManager
 
@@ -30,7 +30,7 @@ def main() -> None:
     sensor = None
     node = None
     try:
-        sensor = Sensor("camera_sensor", "vehicle_1", "cam_front")
+        sensor = CameraSensor("camera_sensor", "vehicle_1", "cam_front")
         node = OffloadableNode("perception", "vehicle_1")
         manager = OffloadManager()
 
