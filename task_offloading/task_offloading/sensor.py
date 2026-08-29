@@ -13,8 +13,8 @@ class Sensor(Node):
         # node_id is passed to rclpy as the node name; read it back via get_name().
         # It is NOT stored as a separate self.node_id field.
         super().__init__(node_id)
-        self.current_location = current_location  # framework-owned, not from rclpy
-        self.sensor_id = sensor_id
+        self._current_location = current_location  # framework-owned, not from rclpy
+        self._sensor_id = sensor_id
 
     def report_location(self) -> None:
         pass
