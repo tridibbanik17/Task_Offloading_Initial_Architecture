@@ -5,6 +5,9 @@ skinparam classAttributeIconSize 0
 ' are not misread as abstract.
 skinparam classFontStyle plain
 skinparam classAttributeFontStyle plain
+' Tighten spacing so multiplicity labels sit closer to the arrowheads.
+skinparam nodesep 40
+skinparam ranksep 45
 
 ' --- External base classes + Sensor (declared first to rank near the top) ---
 class "Node" as rclpy.node.Node <<external>>
@@ -69,7 +72,7 @@ class "OffloadManager" as task_offloading.offload_manager.OffloadManager {
   + monitor_progress(migration: Migration) : None
   + confirm_completion(migration: Migration) : None
   + rollback(migration: Migration) : None
-  + handle_manual_request(request, response)
+  + handle_manual_request(request, response) : Response
 }
 class "OffloadableNode" as task_offloading.offloadable_node.OffloadableNode {
   # _current_location : str
@@ -88,7 +91,7 @@ class "OffloadableNode" as task_offloading.offloadable_node.OffloadableNode {
   + get_snapshot() : StateSnapshot
   + restore_snapshot(snapshot: StateSnapshot) : None
   + register_with_manager() : None
-  + handle_offload_request(request, response)
+  + handle_offload_request(request, response) : Response
   + send_heartbeat() : None
   + report_status() : NodeStatus
 }
