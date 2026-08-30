@@ -5,6 +5,7 @@ from task_offloading.offloadable_node import OffloadableNode
 class OffloadManager:
     def __init__(self) -> None:
         self._registry: dict[str, NodeRecord] = {}
+        self._managed_nodes: dict[str, OffloadableNode] = {}
         self._cpu_threshold: float = 0.0
         self._mem_threshold: float = 0.0
         self._latency_threshold: float = 0.0

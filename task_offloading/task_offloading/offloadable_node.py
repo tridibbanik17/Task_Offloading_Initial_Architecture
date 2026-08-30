@@ -20,6 +20,11 @@ class OffloadableNode(LifecycleNode):
     def report_location(self) -> None:
         pass
 
+    # --- Core processing ---
+    def process(self, data: Any) -> Any:
+        # Process one incoming sensor reading and produce the output to publish.
+        pass
+
     # --- Lifecycle callbacks (ROS2) ---
     def on_configure(self, state: LifecycleState) -> TransitionCallbackReturn:
         pass
@@ -54,6 +59,11 @@ class OffloadableNode(LifecycleNode):
         pass
 
     def handle_offload_request(self, request, response):
+        pass
+
+    def handle_mute_request(self, request, response):
+        # Service handler: mute this node's publishers (stop publishing output)
+        # while staying Active for rollback safety. Triggered by the OffloadManager.
         pass
 
     def send_heartbeat(self) -> None:

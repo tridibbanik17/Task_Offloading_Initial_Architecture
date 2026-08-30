@@ -81,6 +81,7 @@ class "OffloadableNode" as task_offloading.offloadable_node.OffloadableNode {
   # _snapshot_version : int
   # _snapshot : StateSnapshot | None
   + report_location() : None
+  + process(data: Any) : Any
   + on_configure(state: LifecycleState) : TransitionCallbackReturn
   + on_activate(state: LifecycleState) : TransitionCallbackReturn
   + on_deactivate(state: LifecycleState) : TransitionCallbackReturn
@@ -92,6 +93,7 @@ class "OffloadableNode" as task_offloading.offloadable_node.OffloadableNode {
   + restore_snapshot(snapshot: StateSnapshot) : None
   + register_with_manager() : None
   + handle_offload_request(request, response) : Response
+  + handle_mute_request(request, response) : Response
   + send_heartbeat() : None
   + report_status() : NodeStatus
 }
