@@ -1,0 +1,115 @@
+@startuml classes_task_offloading
+set namespaceSeparator none
+skinparam classAttributeIconSize 0
+' All classes here are concrete; render methods plain (not italic) so they
+' are not misread as abstract.
+skinparam classFontStyle plain
+skinparam classAttributeFontStyle plain
+
+' --- External base classes + Sensor (declared first to rank near the top) ---
+class "Node" as rclpy.node.Node <<external>>
+class "LifecycleNode" as rclpy.lifecycle.LifecycleNode <<external>>
+class "Sensor" as task_offloading.sensor.Sensor {
+  # _current_location : str
+  # _sensor_id : str
+  + report_location() : None
+  + publish() : None
+}
+
+class "Decision" as task_offloading.value_types.Decision {
+  + should_migrate : bool
+  + node_id : str
+  + target_location : str
+  + reason : str
+}
+class "Migration" as task_offloading.value_types.Migration {
+  + node_id : str
+  + source_location : str
+  + target_location : str
+  + status : str
+  + started_at : float
+}
+class "NodeRecord" as task_offloading.value_types.NodeRecord {
+  + node_id : str
+  + current_location : str
+  + lifecycle_state : str
+  + cpu_usage : float
+  + mem_usage : float
+  + last_heartbeat : float
+}
+class "NodeStatus" as task_offloading.value_types.NodeStatus {
+  + node_id : str
+  + current_location : str
+  + lifecycle_state : str
+  + cpu_usage : float
+  + mem_usage : float
+  + migration_eligible : bool
+}
+class "StateSnapshot" as task_offloading.value_types.StateSnapshot {
+  + version : int
+  + variables : bytes
+  + buffered_messages : bytes
+  + subscriptions : list
+  + timestamp : float
+  + to_bytes() : bytes
+  + from_bytes(data: bytes) : 'StateSnapshot'
+}
+class "OffloadManager" as task_offloading.offload_manager.OffloadManager {
+  # _registry : dict[str, NodeRecord]
+  # _managed_nodes : dict[str, OffloadableNode]
+  # _cpu_threshold : float
+  # _mem_threshold : float
+  # _latency_threshold : float
+  # _active_migrations : dict[str, Migration]
+  + register_node(record: NodeRecord) : None
+  + deregister_node(node_id: str) : None
+  + evaluate() : Decision
+  + spawn_target(location: str) : OffloadableNode
+  + initiate_migration(node_id: str, target_location: str) : Migration
+  + monitor_progress(migration: Migration) : None
+  + confirm_completion(migration: Migration) : None
+  + rollback(migration: Migration) : None
+  + handle_manual_request(request, response)
+}
+class "OffloadableNode" as task_offloading.offloadable_node.OffloadableNode {
+  # _current_location : str
+  # _internal_state : dict[str, Any]
+  # _lifecycle_state : str
+  # _snapshot_version : int
+  # _snapshot : StateSnapshot | None
+  + report_location() : None
+  + on_configure(state: LifecycleState) : TransitionCallbackReturn
+  + on_activate(state: LifecycleState) : TransitionCallbackReturn
+  + on_deactivate(state: LifecycleState) : TransitionCallbackReturn
+  + on_shutdown(state: LifecycleState) : TransitionCallbackReturn
+  + on_error(state: LifecycleState) : TransitionCallbackReturn
+  + serialize_state() : bytes
+  + deserialize_state(data: bytes) : None
+  + get_snapshot() : StateSnapshot
+  + restore_snapshot(snapshot: StateSnapshot) : None
+  + register_with_manager() : None
+  + handle_offload_request(request, response)
+  + send_heartbeat() : None
+  + report_status() : NodeStatus
+}
+' --- Inheritance (declared parent <|-- child so parents rank at the top) ---
+' LifecycleNode inherits Node in rclpy, so OffloadableNode is transitively a Node.
+rclpy.node.Node <|-- rclpy.lifecycle.LifecycleNode
+rclpy.node.Node <|-- task_offloading.sensor.Sensor
+rclpy.lifecycle.LifecycleNode <|-- task_offloading.offloadable_node.OffloadableNode
+
+' --- Associations (stored attributes) ---
+task_offloading.offload_manager.OffloadManager "1" --> "0..*" task_offloading.offloadable_node.OffloadableNode : _managed_nodes
+task_offloading.offload_manager.OffloadManager "1" --> "0..*" task_offloading.value_types.Migration : _active_migrations
+task_offloading.offload_manager.OffloadManager "1" --> "0..*" task_offloading.value_types.NodeRecord : _registry
+task_offloading.offloadable_node.OffloadableNode "1" --> "0..1" task_offloading.value_types.StateSnapshot : _snapshot
+
+' --- Dependencies (types used only in method signatures) ---
+task_offloading.offload_manager.OffloadManager ..> task_offloading.value_types.Decision : returns
+task_offloading.offloadable_node.OffloadableNode ..> task_offloading.value_types.NodeStatus : returns
+
+' --- Layout hint: keep Node in the top-middle above LifecycleNode and Sensor,
+'     and bias the whole inheritance cluster to the top right. Hidden = not drawn. ---
+task_offloading.offload_manager.OffloadManager -[hidden]right- rclpy.node.Node
+rclpy.lifecycle.LifecycleNode -[hidden]right- task_offloading.sensor.Sensor
+@enduml
