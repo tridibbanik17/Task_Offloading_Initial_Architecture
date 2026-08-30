@@ -5,6 +5,7 @@ class "Decision" as task_offloading.value_types.Decision {
   reason : str
   should_migrate : bool
   target_location : str
+  __init__(self, should_migrate: bool, node_id: str, target_location: str, reason: str) -> None
 }
 class "Migration" as task_offloading.value_types.Migration {
   node_id : str
@@ -12,6 +13,7 @@ class "Migration" as task_offloading.value_types.Migration {
   started_at : float
   status : str
   target_location : str
+  __init__(self, node_id: str, source_location: str, target_location: str, status: str, started_at: float) -> None
 }
 class "NodeRecord" as task_offloading.value_types.NodeRecord {
   cpu_usage : float
@@ -20,6 +22,7 @@ class "NodeRecord" as task_offloading.value_types.NodeRecord {
   lifecycle_state : str
   mem_usage : float
   node_id : str
+  __init__(self, node_id: str, current_location: str, lifecycle_state: str, cpu_usage: float, mem_usage: float, last_heartbeat: float) -> None
 }
 class "NodeStatus" as task_offloading.value_types.NodeStatus {
   cpu_usage : float
@@ -28,8 +31,16 @@ class "NodeStatus" as task_offloading.value_types.NodeStatus {
   mem_usage : float
   migration_eligible : bool
   node_id : str
+  __init__(self, node_id: str, current_location: str, lifecycle_state: str, cpu_usage: float, mem_usage: float, migration_eligible: bool) -> None
 }
 class "OffloadManager" as task_offloading.offload_manager.OffloadManager {
+  _active_migrations : dict[str, Migration]
+  _cpu_threshold : float
+  _latency_threshold : float
+  _managed_nodes : dict[str, OffloadableNode]
+  _mem_threshold : float
+  _registry : dict[str, NodeRecord]
+  __init__() -> None
   {abstract}confirm_completion(migration: Migration) -> None
   {abstract}deregister_node(node_id: str) -> None
   {abstract}evaluate() -> Decision
@@ -41,6 +52,12 @@ class "OffloadManager" as task_offloading.offload_manager.OffloadManager {
   {abstract}spawn_target(location: str) -> OffloadableNode
 }
 class "OffloadableNode" as task_offloading.offloadable_node.OffloadableNode {
+  _current_location : str
+  _internal_state : dict[str, Any]
+  _lifecycle_state : str
+  _snapshot : StateSnapshot | None
+  _snapshot_version : int
+  __init__(node_id: str, current_location: str) -> None
   {abstract}deserialize_state(data: bytes) -> None
   {abstract}get_snapshot() -> StateSnapshot
   {abstract}handle_offload_request(request, response)
@@ -57,6 +74,9 @@ class "OffloadableNode" as task_offloading.offloadable_node.OffloadableNode {
   {abstract}serialize_state() -> bytes
 }
 class "Sensor" as task_offloading.sensor.Sensor {
+  _current_location : str
+  _sensor_id : str
+  __init__(node_id: str, current_location: str, sensor_id: str) -> None
   {abstract}publish() -> None
   {abstract}report_location() -> None
 }
@@ -66,7 +86,11 @@ class "StateSnapshot" as task_offloading.value_types.StateSnapshot {
   timestamp : float
   variables : bytes
   version : int
+  __init__(self, version: int, variables: bytes, buffered_messages: bytes, subscriptions: list, timestamp: float) -> None
   {abstract}from_bytes(data: bytes) -> 'StateSnapshot'
   {abstract}to_bytes() -> bytes
 }
+task_offloading.offload_manager.OffloadManager --> task_offloading.offloadable_node.OffloadableNode : _managed_nodes
+task_offloading.offload_manager.OffloadManager --> task_offloading.value_types.Migration : _active_migrations
+task_offloading.offload_manager.OffloadManager --> task_offloading.value_types.NodeRecord : _registry
 @enduml
