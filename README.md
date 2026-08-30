@@ -15,3 +15,17 @@ colcon build --packages-select task_offloading
 source install/setup.bash
 python3 -m task_offloading.demo
 ```
+
+## Output
+
+```bash
+All classes instantiated successfully:
+  - StateSnapshot
+  - NodeRecord
+  - NodeStatus
+  - Decision
+  - Migration
+  - Sensor
+  - OffloadableNode
+  - OffloadManager
+```
