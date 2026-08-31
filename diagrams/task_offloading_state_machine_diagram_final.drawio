@@ -1,0 +1,147 @@
+<mxfile host="Electron">
+  <diagram name="Migration State Machine" id="JdSOVHHI553OFou9TPBt">
+    <mxGraphModel dx="2247" dy="679" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5WVoVDoKSA6pljp2tp71-89" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=center;verticalAlign=middle;" value="Migration State Machine (Node-Level View)&#xa;Hot Standby: Target activates before handoff; Source keeps publishing until muted, then stays Active for rollback" vertex="1">
+          <mxGeometry height="40" width="820" x="130" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-90" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=13;fillColor=#FFF3E0;strokeColor=#E65100;fontColor=#E65100;container=0;" value="SOURCE SIDE" vertex="1">
+          <mxGeometry height="1120" width="460" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-91" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="24" x="250" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-92" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A5D6A7;strokeColor=#2E7D32;" value="ACTIVE&#xa;(process(data: Any) : Any on stream, publishing /node/output)" vertex="1">
+          <mxGeometry height="55" width="200" x="180" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-93" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF59D;strokeColor=#F9A825;" value="ACTIVE + SERIALIZING&#xa;(still processing;&#xa;get_snapshot() : StateSnapshot&#xa;-&gt; serialize_state() : bytes)" vertex="1">
+          <mxGeometry height="80" width="220" x="170" y="278" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-94" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF59D;strokeColor=#F9A825;" value="ACTIVE + WAITING&#xa;(still processing while waiting for target confirm)" vertex="1">
+          <mxGeometry height="65" width="220" x="170" y="405" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-95" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCC80;strokeColor=#EF6C00;" value="ACTIVE + MUTED&#xa;(handle_mute_request(request, response) : Response;&#xa;still Active for rollback, publishers muted)" vertex="1">
+          <mxGeometry height="70" width="220" x="170" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-96" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCC80;strokeColor=#EF6C00;" value="DEACTIVATING&#xa;(on_deactivate(state) : TransitionCallbackReturn)&#xa;(Manager ChangeState: transition deactivate)" vertex="1">
+          <mxGeometry height="80" width="240" x="160" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-97" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E65100;" value="INACTIVE" vertex="1">
+          <mxGeometry height="40" width="140" x="210" y="770" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-98" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EF9A9A;strokeColor=#C62828;" value="SHUTTING DOWN&#xa;(on_shutdown(state) : TransitionCallbackReturn)" vertex="1">
+          <mxGeometry height="55" width="240" x="160" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-99" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0E0E0;strokeColor=#424242;" value="FINALIZED&#xa;(terminal lifecycle state after on_shutdown();&#xa;Manager deregister_node(node_id: str) : None removes it from the registry)" vertex="1">
+          <mxGeometry height="90" width="270" x="145" y="945" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-100" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;shape=endState;" value="" vertex="1">
+          <mxGeometry height="28" width="28" x="258" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-101" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=13;fillColor=#F3E5F5;strokeColor=#6A1B9A;fontColor=#6A1B9A;container=0;" value="TARGET SIDE" vertex="1">
+          <mxGeometry height="740" width="440" x="660" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-102" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="24" x="868" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-103" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#6A1B9A;" value="UNCONFIGURED&#xa;(spawn_target(location: str) : OffloadableNode; freshly spawned)" vertex="1">
+          <mxGeometry height="55" width="190" x="780" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-104" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CE93D8;strokeColor=#6A1B9A;" value="CONFIGURING&#xa;(deserialize_state(data: bytes) : None&#xa;-&gt; restore_snapshot(snapshot: StateSnapshot) : None&#xa;-&gt; on_configure(state) : TransitionCallbackReturn)" vertex="1">
+          <mxGeometry height="95" width="260" x="745" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-105" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF59D;strokeColor=#F9A825;" value="INACTIVE&#xa;(state restored)" vertex="1">
+          <mxGeometry height="50" width="190" x="780" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-106" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CE93D8;strokeColor=#6A1B9A;" value="ACTIVATING&#xa;(on_activate(state) : TransitionCallbackReturn)" vertex="1">
+          <mxGeometry height="50" width="190" x="780" y="525" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-107" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A5D6A7;strokeColor=#2E7D32;" value="ACTIVE&#xa;(process(data: Any) : Any resumes; send_heartbeat() : None to Manager)" vertex="1">
+          <mxGeometry height="60" width="190" x="780" y="635" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-108" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=12;fillColor=#FFEBEE;strokeColor=#C62828;fontColor=#C62828;container=0;align=left;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;ROLLBACK PATH &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; (on any failure)" vertex="1">
+          <mxGeometry height="330" width="440" x="360" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-109" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#EF9A9A;strokeColor=#C62828;" value="FAILURE DETECTED&#xa;(serialization, transfer, or target activation failed)" vertex="1">
+          <mxGeometry height="100" width="220" x="470" y="1290" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-110" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A5D6A7;strokeColor=#2E7D32;" value="SOURCE CONTINUES ACTIVE&#xa;(Manager rollback(migration: Migration) : None; source never stopped)" vertex="1">
+          <mxGeometry height="70" width="220" x="470" y="1430" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-111" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-91" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-92" value="normal operation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-112" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-92" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-93" value="SendGoal (ROS2 action) -&gt; handle_offload_request(request, response) : Response (source keeps processing!)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-113" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-93" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-94" value="snapshot sent to target (source keeps processing!)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-114" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-94" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-95" value="handle_mute_request() (mute publishers) -&gt; action Feedback: &quot;target confirmed active, output muted&quot;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-115" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-95" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-96" value="ChangeState (ROS2 service) (transition: deactivate)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-116" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-96" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-97" value="on_deactivate() -&gt; TransitionCallbackReturn.SUCCESS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-117" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-97" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-98" value="proceed to shutdown">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-118" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-98" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-99" value="on_shutdown() -&gt; TransitionCallbackReturn.SUCCESS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-119" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-99" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-100" value="Manager teardown_node(node_id) -&gt; &lt;&lt;ROS2 built-in&gt;&gt; destroy_node() : None">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-120" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-102" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-103" value="Offload Manager spawns target">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-121" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-103" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-104" value="snapshot received">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-122" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-104" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-105" value="on_configure() -&gt; TransitionCallbackReturn.SUCCESS (state deserialized)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-123" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-105" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-106" value="ChangeState (ROS2 service) (transition: activate)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-124" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-106" style="endArrow=block;html=1;fontSize=10;" target="5WVoVDoKSA6pljp2tp71-107" value="on_activate() -&gt; TransitionCallbackReturn.SUCCESS">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-125" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-93" style="endArrow=block;html=1;fontSize=10;strokeColor=#D32F2F;strokeWidth=2;fontColor=#D32F2F;fontStyle=1;" target="5WVoVDoKSA6pljp2tp71-103" value="StateTransfer request (ROS2 Service: snapshot bytes)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-126" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-107" style="endArrow=block;html=1;fontSize=10;strokeColor=#2E7D32;strokeWidth=2;fontColor=#2E7D32;fontStyle=1;" target="5WVoVDoKSA6pljp2tp71-94" value="StateTransfer response (&quot;state restored, active&quot;) -&gt; Source enters WAITING">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-127" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-93" style="endArrow=block;html=1;fontSize=10;strokeColor=#C62828;dashed=1;" target="5WVoVDoKSA6pljp2tp71-109" value="serialization fails">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-128" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-94" style="endArrow=block;html=1;fontSize=10;strokeColor=#C62828;dashed=1;" target="5WVoVDoKSA6pljp2tp71-109" value="transfer fails / target timeout">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-129" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-104" style="endArrow=block;html=1;fontSize=10;strokeColor=#C62828;dashed=1;" target="5WVoVDoKSA6pljp2tp71-109" value="deserialization fails -&gt; on_error(state) : TransitionCallbackReturn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-130" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-106" style="endArrow=block;html=1;fontSize=10;strokeColor=#C62828;dashed=1;" target="5WVoVDoKSA6pljp2tp71-109" value="activation fails -&gt; on_error(state) : TransitionCallbackReturn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-131" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-109" style="endArrow=block;html=1;fontSize=10;strokeColor=#C62828;" target="5WVoVDoKSA6pljp2tp71-110" value="Offload Manager rollback(migration) / cancels">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5WVoVDoKSA6pljp2tp71-132" edge="1" parent="1" source="5WVoVDoKSA6pljp2tp71-110" style="endArrow=block;html=1;fontSize=10;strokeColor=#2E7D32;strokeWidth=2;exitX=0;exitY=0.5;entryX=0;entryY=0.75;rounded=0;curved=1;entryDx=0;entryDy=0;" target="5WVoVDoKSA6pljp2tp71-92" value="source was never muted or stopped - just continues as-is">
+          <mxGeometry relative="1" x="0.4363" y="-115" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="-150" y="770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

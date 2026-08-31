@@ -66,6 +66,7 @@ class "OffloadManager" as task_offloading.offload_manager.OffloadManager {
   # _active_migrations : dict[str, Migration]
   + register_node(record: NodeRecord) : None
   + deregister_node(node_id: str) : None
+  + teardown_node(node_id: str) : None
   + evaluate() : Decision
   + spawn_target(location: str) : OffloadableNode
   + initiate_migration(node_id: str, target_location: str) : Migration

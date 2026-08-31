@@ -17,6 +17,13 @@ class OffloadManager:
     def deregister_node(self, node_id: str) -> None:
         pass
 
+    def teardown_node(self, node_id: str) -> None:
+        # Retire a node the Manager created (via spawn_target): remove it from
+        # the registry, then free its ROS2 resources by calling the node's
+        # built-in destroy_node(). destroy_node() itself is a ROS2 (rclpy)
+        # built-in on the node, not defined here.
+        pass
+
     def evaluate(self) -> Decision:
         pass
 
