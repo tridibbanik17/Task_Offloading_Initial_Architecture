@@ -1,0 +1,347 @@
+<mxfile host="Electron">
+  <diagram name="Migration Sequence" id="KfactHjZ_vpilQvUGEst">
+    <mxGraphModel dx="1479" dy="722" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-39" parent="1" style="text;html=1;fontSize=18;fontStyle=1;align=center;verticalAlign=middle;" value="Task Offloading - Migration Sequence Diagram" vertex="1">
+          <mxGeometry height="30" width="700" x="500" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-40" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#E3F2FD;strokeColor=#1565C0;size=40;" value="Offload Manager" vertex="1">
+          <mxGeometry height="1360" width="160" x="120" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-87" edge="1" parent="Wym2_zrz-VYNpdwHY9An-40" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#1565C0;fontSize=11;" value="confirm_completion(migration) : None">
+          <mxGeometry relative="1" x="-0.0976" y="13" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="210.32" y="1260" />
+              <mxPoint x="210.32" y="1280" />
+            </Array>
+            <mxPoint x="86.32" y="1270" as="sourcePoint" />
+            <mxPoint x="79.00181818181801" y="1280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-41" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#CFD8DC;strokeColor=#546E7A;size=40;" value="Downstream&#xa;Consumer" vertex="1">
+          <mxGeometry height="1360" width="160" x="440" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-64" edge="1" parent="Wym2_zrz-VYNpdwHY9An-41" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#1565C0;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; SendGoal">
+          <mxGeometry relative="1" x="-0.4938" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="-234" y="430" as="sourcePoint" />
+            <mxPoint x="414" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-42" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#FFE0B2;strokeColor=#E65100;size=40;" value="Source Node" vertex="1">
+          <mxGeometry height="1360" width="160" x="780" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-68" edge="1" parent="Wym2_zrz-VYNpdwHY9An-42" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#E65100;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /node/output">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="74" y="510" as="sourcePoint" />
+            <mxPoint x="-254" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-66" edge="1" parent="Wym2_zrz-VYNpdwHY9An-42" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#E65100;fontSize=11;" value="serialize_state() : bytes">
+          <mxGeometry relative="1" x="-0.0976" y="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="209.32000000000005" y="520" />
+              <mxPoint x="209.32000000000005" y="540" />
+            </Array>
+            <mxPoint x="85.32000000000005" y="530" as="sourcePoint" />
+            <mxPoint x="78.00181818181852" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-43" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#E1BEE7;strokeColor=#6A1B9A;size=40;" value="Target Node" vertex="1">
+          <mxGeometry height="820" width="160" x="1120" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-44" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#C8E6C9;strokeColor=#2E7D32;size=40;" value="Sensor Node" vertex="1">
+          <mxGeometry height="1360" width="160" x="1460" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-45" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;align=center;verticalAlign=middle;fillColor=#F5F5F5;strokeColor=#BBBBBB;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Normal Operation" vertex="1">
+          <mxGeometry height="24" width="1560" x="60" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-46" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;align=center;verticalAlign=middle;fillColor=#F5F5F5;strokeColor=#BBBBBB;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Decision Phase" vertex="1">
+          <mxGeometry height="24" width="1560" x="60" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-47" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;align=center;verticalAlign=middle;fillColor=#F5F5F5;strokeColor=#BBBBBB;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Migration Phase" vertex="1">
+          <mxGeometry height="24" width="1560" x="60" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-48" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;align=center;verticalAlign=middle;fillColor=#F5F5F5;strokeColor=#BBBBBB;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Mute + Handoff" vertex="1">
+          <mxGeometry height="24" width="1560" x="60" y="854" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-49" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;align=center;verticalAlign=middle;fillColor=#F5F5F5;strokeColor=#BBBBBB;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Source Cleanup (after network delay)" vertex="1">
+          <mxGeometry height="24" width="1560" x="60" y="1064" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-50" parent="1" style="text;html=1;fontStyle=2;fontColor=#555555;align=center;verticalAlign=middle;fillColor=#F5F5F5;strokeColor=#BBBBBB;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Post-Migration" vertex="1">
+          <mxGeometry height="24" width="1560" x="60" y="1284" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-51" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#90CAF9;strokeColor=#1565C0;" value="" vertex="1">
+          <mxGeometry height="1266" width="12" x="194" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-52" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#90A4AE;strokeColor=#546E7A;" value="" vertex="1">
+          <mxGeometry height="1266" width="12" x="514" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-53" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#A5D6A7;strokeColor=#2E7D32;" value="" vertex="1">
+          <mxGeometry height="1266" width="12" x="1534" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-54" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFD54F;strokeColor=#C79100;" value="" vertex="1">
+          <mxGeometry height="1096" width="12" x="854" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-55" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#CE93D8;strokeColor=#8E24AA;" value="" vertex="1">
+          <mxGeometry height="766" width="12" x="1194" y="664" as="geometry" />
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-56" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#2E7D32;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /sensor/data">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1534" y="185" as="sourcePoint" />
+            <mxPoint x="866" y="185" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-58" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#E65100;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /node/output">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="854" y="245" as="sourcePoint" />
+            <mxPoint x="526" y="245" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-59" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#1565C0;fontSize=11;" value="send_heartbeat() : None">
+          <mxGeometry relative="1" x="0.5247" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="854" y="280" as="sourcePoint" />
+            <mxPoint x="206" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-60" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#2E7D32;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /sensor/data">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1534" y="345" as="sourcePoint" />
+            <mxPoint x="866" y="345" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-61" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#E65100;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /node/output">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="854" y="378" as="sourcePoint" />
+            <mxPoint x="526" y="378" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-62" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#1565C0;fontSize=11;" target="Wym2_zrz-VYNpdwHY9An-40" value="evaluate() : Decision&amp;nbsp;">
+          <mxGeometry relative="1" x="-0.0955" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="330" y="350" />
+              <mxPoint x="330" y="370" />
+            </Array>
+            <mxPoint x="206" y="360" as="sourcePoint" />
+            <mxPoint x="306" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-65" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;rounded=0;strokeColor=#E65100;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 action&amp;gt;&amp;gt; Feedback&lt;div&gt;&quot;acknowledged, serializing&quot;&lt;/div&gt;">
+          <mxGeometry relative="1" x="0.4938" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="854" y="549" as="sourcePoint" />
+            <mxPoint x="206" y="549" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-67" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;rounded=0;strokeColor=#6A1B9A;fontSize=11;" value="&amp;lt;&amp;lt;create&amp;gt;&amp;gt; spawn_target(location) : OffloadableNode">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="206" y="630" as="sourcePoint" />
+            <mxPoint x="1120" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-69" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#6A1B9A;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 service&amp;gt;&amp;gt; StateTransfer (request)&lt;br&gt;(snapshot bytes + metadata)">
+          <mxGeometry relative="1" x="-0.1829" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="866" y="674" as="sourcePoint" />
+            <mxPoint x="1194" y="674" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-70" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#6A1B9A;fontSize=11;" target="Wym2_zrz-VYNpdwHY9An-43" value="deserialize_state(data) : None&lt;br&gt;restore_snapshot(snapshot) : None">
+          <mxGeometry relative="1" x="-0.0955" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1330" y="694" />
+              <mxPoint x="1330" y="714" />
+            </Array>
+            <mxPoint x="1206" y="704" as="sourcePoint" />
+            <mxPoint x="1306" y="704" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-71" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#6A1B9A;fontSize=11;" target="Wym2_zrz-VYNpdwHY9An-43" value="on_configure(state) : TransitionCallbackReturn">
+          <mxGeometry relative="1" x="-0.0955" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1330" y="734" />
+              <mxPoint x="1330" y="754" />
+            </Array>
+            <mxPoint x="1206" y="744" as="sourcePoint" />
+            <mxPoint x="1306" y="744" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-72" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#6A1B9A;fontSize=11;" target="Wym2_zrz-VYNpdwHY9An-43" value="on_activate(state) : TransitionCallbackReturn">
+          <mxGeometry relative="1" x="-0.168" y="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1330" y="774" />
+              <mxPoint x="1330" y="794" />
+            </Array>
+            <mxPoint x="1206" y="784" as="sourcePoint" />
+            <mxPoint x="1306" y="784" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-73" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;rounded=0;strokeColor=#6A1B9A;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 service&amp;gt;&amp;gt; StateTransfer (response) &lt;br&gt;&quot;state restored, active&quot;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1194" y="819" as="sourcePoint" />
+            <mxPoint x="866" y="819" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-75" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#2E7D32;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /sensor/data (subscriber SWITCHED)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1534" y="901" as="sourcePoint" />
+            <mxPoint x="1200" y="901" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-76" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#E65100;fontSize=11;" value="handle_mute_request(request, response) : Response">
+          <mxGeometry relative="1" x="-0.0976" y="20" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="990" y="917" />
+              <mxPoint x="990" y="937" />
+            </Array>
+            <mxPoint x="866" y="927" as="sourcePoint" />
+            <mxPoint x="858.6818181818185" y="937.0000000000002" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-78" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#6A1B9A;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /node/output&lt;br&gt;(Target is now the active publisher)">
+          <mxGeometry relative="1" x="0.4491" y="1" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1194" y="1000" as="sourcePoint" />
+            <mxPoint x="526" y="1000" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-79" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;rounded=0;strokeColor=#E65100;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 action&amp;gt;&amp;gt; Feedback&lt;br&gt;&quot;target confirmed active, output muted&quot;">
+          <mxGeometry relative="1" x="0.5247" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="854" y="1049" as="sourcePoint" />
+            <mxPoint x="206" y="1049" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-80" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#2E7D32;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /sensor/data">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1534" y="1104" as="sourcePoint" />
+            <mxPoint x="1200" y="1104" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-81" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#6A1B9A;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /node/output">
+          <mxGeometry relative="1" x="0.509" y="-2" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1194" y="1112" as="sourcePoint" />
+            <mxPoint x="526" y="1112" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-82" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#1565C0;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 Service&amp;gt;&amp;gt; ChangeState&lt;br&gt;(transition: deactivate)">
+          <mxGeometry relative="1" x="-0.5247" y="2" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="206" y="1142" as="sourcePoint" />
+            <mxPoint x="854" y="1142" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-83" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#E65100;fontSize=11;" value="on_deactivate(state) : TransitionCallbackReturn">
+          <mxGeometry relative="1" x="-0.0976" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="990" y="1139" />
+              <mxPoint x="990" y="1159" />
+            </Array>
+            <mxPoint x="866" y="1149" as="sourcePoint" />
+            <mxPoint x="858.6818181818185" y="1159" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-84" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#E65100;fontSize=11;" value="on_shutdown(state): TransitionCallbackReturn">
+          <mxGeometry relative="1" x="-0.0976" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="990" y="1179" />
+              <mxPoint x="990" y="1199" />
+            </Array>
+            <mxPoint x="866" y="1189" as="sourcePoint" />
+            <mxPoint x="858.6818181818185" y="1199" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-86" edge="1" parent="1" source="Wym2_zrz-VYNpdwHY9An-42" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;rounded=0;strokeColor=#E65100;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 action&amp;gt;&amp;gt; Result&lt;div&gt;&quot;migration complete&quot;&lt;/div&gt;">
+          <mxGeometry relative="1" x="0.3757" as="geometry">
+            <mxPoint x="1" as="offset" />
+            <mxPoint x="854" y="1249" as="sourcePoint" />
+            <mxPoint x="206" y="1249" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-88" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#2E7D32;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /sensor/data">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1534" y="1354" as="sourcePoint" />
+            <mxPoint x="1200" y="1354" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-89" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#6A1B9A;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /node/output">
+          <mxGeometry relative="1" x="0.4192" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1194" y="1389" as="sourcePoint" />
+            <mxPoint x="526" y="1389" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-90" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#1565C0;fontSize=11;" value="send_heartbeat() : None">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1194" y="1424" as="sourcePoint" />
+            <mxPoint x="206" y="1424" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-92" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#1565C0;fontSize=11;" value="initiate_migration(node_id, target_location) : Migration">
+          <mxGeometry relative="1" x="-0.0933" y="36" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="330" y="460" />
+              <mxPoint x="330" y="480" />
+            </Array>
+            <mxPoint x="206" y="470" as="sourcePoint" />
+            <mxPoint x="200" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-93" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#E65100;fontSize=11;" value="handle_offload_request(request, response) : Response">
+          <mxGeometry relative="1" x="-0.0904" y="50" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="990.3181818181815" y="509" />
+              <mxPoint x="990.3181818181815" y="529" />
+            </Array>
+            <mxPoint x="866.3181818181815" y="519" as="sourcePoint" />
+            <mxPoint x="859" y="529" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-74" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;strokeColor=#2E7D32;fontSize=11;" value="&amp;lt;&amp;lt;ROS2 topic&amp;gt;&amp;gt; /sensor/data">
+          <mxGeometry relative="1" x="-0.2395" y="1" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1534" y="570" as="sourcePoint" />
+            <mxPoint x="866" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-96" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#E65100;fontSize=11;" value="process(data: Any) : Any">
+          <mxGeometry relative="1" x="-0.0976" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="991.3181818181815" y="210" />
+              <mxPoint x="991.3181818181815" y="230" />
+            </Array>
+            <mxPoint x="867.3181818181815" y="220" as="sourcePoint" />
+            <mxPoint x="860" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Wym2_zrz-VYNpdwHY9An-97" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;rounded=1;strokeColor=#1565C0;fontSize=11;" value="deregister_node(node_id) : None">
+          <mxGeometry relative="1" x="-0.0955" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="331" y="1190" />
+              <mxPoint x="331" y="1210" />
+            </Array>
+            <mxPoint x="207" y="1200" as="sourcePoint" />
+            <mxPoint x="200" y="1210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
