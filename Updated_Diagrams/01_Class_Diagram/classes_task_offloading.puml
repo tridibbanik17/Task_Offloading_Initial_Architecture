@@ -108,7 +108,7 @@ rclpy.lifecycle.LifecycleNode <|-- task_offloading.offloadable_node.OffloadableN
 task_offloading.offload_manager.OffloadManager "1" --> "0..*" task_offloading.offloadable_node.OffloadableNode : _managed_nodes
 task_offloading.offload_manager.OffloadManager "1" --> "0..*" task_offloading.value_types.Migration : _active_migrations
 task_offloading.offload_manager.OffloadManager "1" --> "0..*" task_offloading.value_types.NodeRecord : _registry
-task_offloading.offloadable_node.OffloadableNode "1" --> "0..1" task_offloading.value_types.StateSnapshot : _snapshot
+task_offloading.offloadable_node.OffloadableNode "1" o-- "0..1" task_offloading.value_types.StateSnapshot : _snapshot
 
 ' --- Dependencies (types used only in method signatures) ---
 task_offloading.offload_manager.OffloadManager ..> task_offloading.value_types.Decision : returns
