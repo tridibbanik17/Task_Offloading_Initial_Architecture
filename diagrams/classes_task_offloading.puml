@@ -64,11 +64,11 @@ class "OffloadManager" as task_offloading.offload_manager.OffloadManager {
   # _mem_threshold : float
   # _latency_threshold : float
   # _active_migrations : dict[str, Migration]
+  + spawn_target(location: str) : OffloadableNode
   + register_node(record: NodeRecord) : None
   + deregister_node(node_id: str) : None
   + teardown_node(node_id: str) : None
   + evaluate() : Decision
-  + spawn_target(location: str) : OffloadableNode
   + initiate_migration(node_id: str, target_location: str) : Migration
   + monitor_progress(migration: Migration) : None
   + confirm_completion(migration: Migration) : None

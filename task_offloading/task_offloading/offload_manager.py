@@ -11,6 +11,12 @@ class OffloadManager:
         self._latency_threshold: float = 0.0
         self._active_migrations: dict[str, Migration] = {}
 
+    def spawn_target(self, location: str) -> OffloadableNode:
+        # Create a target node at the given location. The Manager owns the
+        # returned reference (stored in _managed_nodes) and is responsible for
+        # tearing it down later via teardown_node().
+        pass
+
     def register_node(self, record: NodeRecord) -> None:
         pass
 
@@ -25,9 +31,6 @@ class OffloadManager:
         pass
 
     def evaluate(self) -> Decision:
-        pass
-
-    def spawn_target(self, location: str) -> OffloadableNode:
         pass
 
     def initiate_migration(self, node_id: str, target_location: str) -> Migration:
