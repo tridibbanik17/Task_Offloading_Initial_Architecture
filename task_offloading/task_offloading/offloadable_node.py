@@ -62,8 +62,6 @@ class OffloadableNode(LifecycleNode):
         pass
 
     def handle_mute_request(self, request, response):
-        # Service handler: mute this node's publishers (stop publishing output)
-        # while staying Active for rollback safety. Triggered by the OffloadManager.
         pass
 
     def send_heartbeat(self) -> None:
