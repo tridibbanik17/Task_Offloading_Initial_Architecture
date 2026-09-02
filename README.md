@@ -16,7 +16,7 @@ source install/setup.bash
 python3 -m task_offloading.demo
 ```
 
-## Output
+## Output of demo.py
 
 ```bash
 All classes instantiated successfully:
